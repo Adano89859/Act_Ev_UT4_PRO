@@ -1,8 +1,8 @@
-package Gestor
+package Gestor;
 /*
 Este ENUM crea un estandar los posibles estados que puede tener una habitación y usarlos
  */
-enum class Estado {
+ public enum Estado {
     DISPONIBLE,
     RESERVADA,
     OCUPADA
