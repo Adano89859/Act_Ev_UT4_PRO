@@ -2,6 +2,7 @@ package Main;
 import Gestor.Estado;
 import Gestor.Tipo_Habitacion;
 import Modelos.habitaciones;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,6 +10,66 @@ public class Main {
         //Recurro a este metodo para crear las habitaciones y un array que las contenga
         inicializarPlantasHabitaciones();
 
+        //Inicializamos el Scanner para recoger la información por teclado
+        Scanner teclado = new Scanner(System.in);
+
+        //Inicializo las variables del main
+        int eleccion;
+
+        //Opciones referentes al Menú, Bienvenida y las opciones permitidas
+        System.out.println("¡Bienvenido a nuestro hotel, Adán&Kevins'sl!");
+        do{
+
+            
+            //Informo al usuario de las opciones que puede elegir
+            System.out.println("1-Crear Reserva");
+            System.out.println("2-Cancelar Reserva");
+            System.out.println("3-Buscar Habitación a su gusto");
+            System.out.println("4-Buscar Reservas activas");
+            System.out.println("5-Resumen Todas Las Habitaciones");
+            System.out.println("6-Resumen Todos Los Clientes y Sus Habitaciones Reservadas");
+            System.out.println("7-Calcular Precio Total De Una Reserva");
+            System.out.println("8-Salir de  Adán&Kevins'sl");
+            //Leemos la opción elegida por el usuario
+            eleccion = teclado.nextInt();
+
+            //A partir de la opción elegida por el usuario, llamamos al método indicado
+            switch (eleccion) {
+                case 1:
+                    
+                    break;
+                    case 2:
+                    
+                    break;
+                    case 3:
+                    
+                    break;
+                    case 4:
+                    
+                    break;
+                    case 5:
+                    
+                    break;
+                    case 6:
+                    
+                    break;
+                    case 7:
+                    
+                    break;
+                    case 8:
+                    System.out.println("Gracias por confiar en Adán&Kevins'sl ¡Hasta la próxima!");
+                    break;
+                default:
+                System.out.println("Lo sentimos, la opción que seleccionó no es posible.Posibles causas:");
+                System.out.println("-No introdujo un número entro (por ejemplo:4)");
+                System.out.println("-Introdujo un número entro menor que 1 o mayor que 8)");
+                    throw new AssertionError();
+            }
+        }while(eleccion !=8);
+        System.out.println("Considere alguna de las siguientes opciones:");
+
+        //Cerramos el Scanner
+        teclado.close();
     }
 
     /*
