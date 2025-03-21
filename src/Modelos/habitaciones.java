@@ -25,4 +25,33 @@ public class habitaciones {
         this.descripcion = descripcion;
     }
 
+    /*
+    //Los diferentes GETTER y SETTER que tiene la clase habitaciones
+     */
+    public void setNumeroHabitacion(int numeroHabitacion){
+        this.numeroHabitacion = numeroHabitacion;
+    }
+
+    public void settipoHabitacion(Tipo_Habitacion tipoHabitacion){
+        this.tipoHabitacion = tipoHabitacion;
+    }
+
+    public void setestado(Estado estado){
+        this.estado = estado;
+    }
+
+    public void descripcion(String descripcion){
+        this.descripcion = descripcion;
+    }
+
+    public int getNumeroHabitacion(){return this.numeroHabitacion;}
+
+    public Tipo_Habitacion gettipoHabitacion(){return this.tipoHabitacion;}
+
+    public double getprecio_noche(){return this.precio_noche;}
+
+    public Estado getestado(){return this.estado;}
+
+    public String getdescripcion(){return this.descripcion;}
+
 }
