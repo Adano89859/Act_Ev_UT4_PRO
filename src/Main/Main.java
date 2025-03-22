@@ -1,5 +1,6 @@
 package Main;
 import Gestor.Estado;
+import Gestor.Gestor_Hotel;
 import Gestor.Tipo_Habitacion;
 import Modelos.habitaciones;
 import java.util.Scanner;
@@ -8,7 +9,9 @@ public class Main {
     public static void main(String[] args) {
 
         //Recurro a este metodo para crear las habitaciones y un array que las contenga
-        inicializarPlantasHabitaciones();
+        habitaciones[][]Hotel = inicializarPlantasHabitaciones();
+        //Uso el array de Hotel que contiene las habitaciones y lo introduzco en el constructor del Gestor
+        Gestor_Hotel gestorHotel = inicializarGestor_Hotel(Hotel);
 
         //Inicializamos el Scanner para recoger la información por teclado
         Scanner teclado = new Scanner(System.in);
@@ -29,7 +32,7 @@ public class Main {
             System.out.println("5-Resumen Todas Las Habitaciones");
             System.out.println("6-Resumen Todos Los Clientes y Sus Habitaciones Reservadas");
             System.out.println("7-Calcular Precio Total De Una Reserva");
-            System.out.println("8-Salir de  Adán&Kevins'sl");
+            System.out.println("8-Salir de Adán&Kevins'sl");
             //Leemos la opción elegida por el usuario
             eleccion = teclado.nextInt();
 
@@ -48,7 +51,7 @@ public class Main {
                     
                     break;
                     case 5:
-                    
+                        gestorHotel.resumenHabitaciones();
                     break;
                     case 6:
                     
@@ -75,7 +78,7 @@ public class Main {
     /*
     Resultado: Este metodo crea los objetos habitación y los asigna dentro del array Hotel que representa el Hotel
      */
-    public static void inicializarPlantasHabitaciones(){
+    public static habitaciones[][] inicializarPlantasHabitaciones(){
         //Creo el array bidimensional o matriz de Hotel
         habitaciones[][]Hotel = new habitaciones[3][5];
         //Introduzco las habitaciones de la planta 1 en el array
@@ -96,6 +99,15 @@ public class Main {
         Hotel[2][2] = new habitaciones(303, Tipo_Habitacion.SUITE,30, Estado.DISPONIBLE,"Habitación suite");
         Hotel[2][3] = new habitaciones(304, Tipo_Habitacion.SUITE,30, Estado.DISPONIBLE,"Habitación suite");
         Hotel[2][4] = new habitaciones(305, Tipo_Habitacion.SUITE,30, Estado.DISPONIBLE,"Habitación suite");
+        //Devolvemos el array que acabamos de crear
+        return Hotel;
+    }
+
+    public static Gestor_Hotel inicializarGestor_Hotel(habitaciones[][]Hotel){
+        //Creo el objeto
+        Gestor_Hotel gestorHotel = new Gestor_Hotel(Hotel);
+        //Devuelvo el objeto para que pueda ser usado en main
+        return gestorHotel;
     }
 
 }
