@@ -5,7 +5,7 @@ import Gestor.Tipo_Habitacion;
 
 public class habitaciones {
 
-    //Atributos de la clase Habitaciones
+    //Atributos de la clase Habitaciones y su relación con el cliente
     private int numeroHabitacion;
     private Tipo_Habitacion tipoHabitacion;
     private double precio_noche;
@@ -14,7 +14,7 @@ public class habitaciones {
 
     /*
     *CONSTRUCTOR*
-    @param Un número de habitación, un tipo de habitación, un precio por noche, un estado, y una descripción.
+    @param Un número de habitación, un tipo de habitación, un precio por noche, un estado, una descripción.
     Resultado: Se crea en el Main, introduciendo la información que tendrá este objeto, y desde el constructor atribuyo la info del main al modelo actual
      */
     public habitaciones(int numeroHabitacion,Tipo_Habitacion tipoHabitacion,double precio_noche,Estado estado,String descripcion){
@@ -43,6 +43,7 @@ public class habitaciones {
     public void descripcion(String descripcion){
         this.descripcion = descripcion;
     }
+
 
     public int getNumeroHabitacion(){return this.numeroHabitacion;}
 
