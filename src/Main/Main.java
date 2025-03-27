@@ -61,7 +61,7 @@ public class Main {
                     break;
                     case 6:
                         // Traemos del gestor el resumen de los clientes
-                        gestorHotel.resumenCliente(listaClientes, numClientes);
+                        gestorHotel.resumenCliente(listaClientes);
                     break;
                     case 7:
                     
