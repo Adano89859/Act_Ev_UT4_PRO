@@ -1,6 +1,7 @@
 package Gestor;
 
 import Modelos.habitaciones;
+import Modelos.clientes;
 
 public class Gestor_Hotel {
 
@@ -38,4 +39,32 @@ public class Gestor_Hotel {
         }
     }
 
+    /*
+    Resultado: Este metodo otorga toda la información de cada uno de los clientes que estén hospedados
+    si están hospedados (true) el array listaClientes lo almacena hasta 100 clientes, en caso contrario
+    no hace ninguna acción y solo comenta que no ya clientes registrados. 
+    */
+
+    public void resumenCliente(clientes[] listaClientes, int numClientes) {
+        // Verificamos si hay clentes registrados si no no hace nada y mostrará un mensaje
+        if (numClientes ==0) {
+            System.out.println("No hay clientes registrados ");
+            return;
+        }
+
+        /**
+         * Si hay clientes registrados entonces recorrerá el array del contador de clientes almacenados e imprimirá
+         * los resultados @params(id, nombre, historial) traidos del modelo clientes
+         */
+        for (int i = 0; i < numClientes; i++) {
+            clientes cliente = listaClientes[i];
+            System.out.println("-------------------------------------------");
+            System.out.println("ID cliente: " + cliente.getId());
+            System.out.println("Nombre del cliente: " + cliente.getNombre());
+            System.out.println("Historial del cliente: " + cliente.getHistorial());
+            System.out.println("-------------------------------------------");
+            
+        }
+        
+    }
 }

@@ -2,37 +2,42 @@ package Main;
 import Gestor.Estado;
 import Gestor.Gestor_Hotel;
 import Gestor.Tipo_Habitacion;
+import Modelos.clientes;
 import Modelos.habitaciones;
 import java.util.Scanner;
+import Vista.MainVista;
 
 public class Main {
     public static void main(String[] args) {
 
-        //Recurro a este metodo para crear las habitaciones y un array que las contenga
+        //Recurrimos a este metodo para crear las habitaciones y un array que las contenga
         habitaciones[][]Hotel = inicializarPlantasHabitaciones();
+
         //Uso el array de Hotel que contiene las habitaciones y lo introduzco en el constructor del Gestor
         Gestor_Hotel gestorHotel = inicializarGestor_Hotel(Hotel);
 
         //Inicializamos el Scanner para recoger la información por teclado
         Scanner teclado = new Scanner(System.in);
-
-        //Inicializo las variables del main
+        
+        //Inicializamos las variables del main
         int eleccion;
+        
+        //Cargamos la vista
+        MainVista mainVista = new MainVista();
+
+        // Creamos un array de clientes e inicializamos a tamaño a 100 de clientes
+        // y creamos un contador que almacenara el numero de clientes que se registran
+        clientes[] listaClientes = new clientes[100];
+        int numClientes = 0;
 
         //Opciones referentes al Menú, Bienvenida y las opciones permitidas
-        System.out.println("¡Bienvenido a nuestro hotel, Adán&Kevins'sl!");
+        mainVista.mostrarBienvenida();
+
         do{
 
-            
-            //Informo al usuario de las opciones que puede elegir
-            System.out.println("1-Crear Reserva");
-            System.out.println("2-Cancelar Reserva");
-            System.out.println("3-Buscar Habitación a su gusto");
-            System.out.println("4-Buscar Reservas activas");
-            System.out.println("5-Resumen Todas Las Habitaciones");
-            System.out.println("6-Resumen Todos Los Clientes y Sus Habitaciones Reservadas");
-            System.out.println("7-Calcular Precio Total De Una Reserva");
-            System.out.println("8-Salir de Adán&Kevins'sl");
+            //Creamos un menú de las opciones que se pueden elegir
+            mainVista.mostrarMenuReserva();
+
             //Leemos la opción elegida por el usuario
             eleccion = teclado.nextInt();
 
@@ -51,25 +56,26 @@ public class Main {
                     
                     break;
                     case 5:
+                        // Traemos del gestor el resumen de las habitaciones
                         gestorHotel.resumenHabitaciones();
                     break;
                     case 6:
-                    
+                        // Traemos del gestor el resumen de los clientes
+                        gestorHotel.resumenCliente(listaClientes, numClientes);
                     break;
                     case 7:
                     
                     break;
                     case 8:
-                    System.out.println("Gracias por confiar en Adán&Kevins'sl ¡Hasta la próxima!");
+                        // Traemos de la vista el texto de despedida
+                        mainVista.mostrarDespedida();
                     break;
                 default:
-                System.out.println("Lo sentimos, la opción que seleccionó no es posible.Posibles causas:");
-                System.out.println("-No introdujo un número entro (por ejemplo:4)");
-                System.out.println("-Introdujo un número entro menor que 1 o mayor que 8)");
+                    // Traemos de la vista el texto de opción inválida
+                    mainVista.mostrarOpcionInvalida();
                     throw new AssertionError();
             }
         }while(eleccion !=8);
-        System.out.println("Considere alguna de las siguientes opciones:");
 
         //Cerramos el Scanner
         teclado.close();
@@ -109,5 +115,4 @@ public class Main {
         //Devuelvo el objeto para que pueda ser usado en main
         return gestorHotel;
     }
-
 }
