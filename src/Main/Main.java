@@ -44,7 +44,7 @@ public class Main {
             //A partir de la opción elegida por el usuario, llamamos al método indicado
             switch (eleccion) {
                 case 1:
-                    
+                    gestorHotel.crearReserva();
                     break;
                     case 2:
                     

@@ -66,4 +66,10 @@ public class Gestor_Hotel {
         }
         
     }
+
+    public void crearReserva(){
+
+        
+
+    }
 }
