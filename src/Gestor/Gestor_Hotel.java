@@ -65,9 +65,9 @@ public class Gestor_Hotel {
             System.out.println("Nombre del cliente: " + cliente.getNombre());
             System.out.println("Historial del cliente: " + cliente.getHistorial());
             System.out.println("-------------------------------------------");
-            
+
         }
-        
+
     }
 
     /*
@@ -81,8 +81,92 @@ public class Gestor_Hotel {
         System.out.println("Decidió crear una reserva ¿Quién es el interesado en hacer la reserva?");
         String persona = teclado.nextLine();
 
-        //Método para verificar que la persona en cuestión existe
+        //Compruebo que existe el usuario
+        if(verificadorClienteExiste(persona)){
+            //Ahora que sé que el usuario existe, le digo las habitaciones que están disponibles
+            mostrarHabitacionesDisponibles();
 
+            //Le pido al usuario la habitación que quiere
+            System.out.println("Introduce el número de la habitación que deseas reservar:");
+            String habitacionReservar = teclado.nextLine();
+
+            //Verifico que la habitación seleccionada existe
+
+
+        }else{
+            System.out.println("ERROR: La persona que seleccionó no existe");
+        }
 
     }
+
+    /*
+    @param El nombre de la persona
+    @return Booleano que dice si la persona existe o no
+    Método para verificar que la persona en cuestión existe
+     */
+    public boolean verificadorClienteExiste(String persona){
+        for(clientes cliente : listaClientes){
+            //Compruebo el nombre de cada cliente, y lo comparo con el texto metido por el usuario
+            if(persona.equals(cliente.getNombre())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+    Resultado: Este método te muestra si hay habitaciones disponibles, también cuales hay; esta información se muestra por terminal
+     */
+    public void mostrarHabitacionesDisponibles(){
+        //Informo de que estas son las habitaciones disponibles
+        System.out.println("Las habitaciones disponibles son:");
+
+        //Creo una variable que va a comprobar que existen habitaciones disponibles
+        boolean existenHabitacionesDisponibles = false;
+        //Compruebo que al menos existe una habitación disponible
+        for(habitaciones[] planta:Hotel){
+            //Del desglosado previo, voy sacando el número de cada habitación
+            for(habitaciones habitacion:planta){
+                if(habitacion.getestado()==Estado.DISPONIBLE){
+                    existenHabitacionesDisponibles = true;
+                }
+            }
+        }
+
+        //A partir de lo anterior hecho, recorro o nó este array de hotel de nuevo para mostrar las habitaciones disponibles
+        if(existenHabitacionesDisponibles){
+            for(habitaciones[] planta:Hotel){
+                //Del desglosado previo, voy sacando el número de cada habitación
+                for(habitaciones habitacion:planta){
+                    if(habitacion.getestado()==Estado.DISPONIBLE){
+                        //Muestro la información necesaria de las habitaciones
+                        System.out.println("-------------------------------------------");
+                        System.out.println("La habitación: "+habitacion.getNumeroHabitacion());
+                        System.out.println("-------------------------------------------");
+                    }
+                }
+            }
+        }else{
+            //Muestro que no existen habitaciones disponibles
+            System.out.println("-------------------------------------------");
+            System.out.println("No existen habitaciones disponibles");
+            System.out.println("-------------------------------------------");
+        }
+    }
+
+
+    public boolean verificadorHabitaciónExiste(String habitacionConcreta){
+        for(habitaciones[] planta:Hotel){
+            //Del desglosado previo, voy sacando el número de cada habitación
+            for(habitaciones habitacion:planta){
+                if(habitacionConcreta.equals(habitacion.getNumeroHabitacion())){
+                    return true;
+                }
+            }
+        }
+
+        //Devuelvo false en caso de que no exista dicha habitación
+        return false;
+    }
+
 }
