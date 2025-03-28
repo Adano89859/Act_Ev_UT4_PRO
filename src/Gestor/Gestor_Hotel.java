@@ -3,16 +3,19 @@ package Gestor;
 import Modelos.habitaciones;
 import Modelos.clientes;
 
+import java.util.Scanner;
+
 public class Gestor_Hotel {
 
     //Atributos de la clase Gestor_Hotel
     habitaciones[][]Hotel;
-
+    clientes[] listaClientes;
     /*
     //CONSTRUCTOR de la clase Gestor_Hotel
      */
-    public Gestor_Hotel(habitaciones[][]Hotel) {
+    public Gestor_Hotel(habitaciones[][]Hotel, clientes[] listaClientes) {
         this.Hotel = Hotel;
+        this.listaClientes = listaClientes;
     }
 
     /*
@@ -44,7 +47,7 @@ public class Gestor_Hotel {
     si están hospedados (true) el array listaClientes lo almacena hasta 100 clientes, en caso contrario
     no hace ninguna acción y solo comenta que no ya clientes registrados. 
     */
-    public void resumenCliente(clientes[] listaClientes) {
+    public void resumenCliente() {
         // Verificamos si hay clentes registrados si no no hace nada y mostrará un mensaje
         if (listaClientes.length ==0) {
             System.out.println("No hay clientes registrados ");
@@ -67,9 +70,19 @@ public class Gestor_Hotel {
         
     }
 
+    /*
+    Este método se encarga de crear una reserva a partir de lo que desea el usuario y de si es posible
+     */
     public void crearReserva(){
+        //Creo un scanner para leer la información que introduce el usuario
+        Scanner teclado = new Scanner(System.in);
 
-        
+        //Recojo el supuesto usuario que va a realizar la reserva
+        System.out.println("Decidió crear una reserva ¿Quién es el interesado en hacer la reserva?");
+        String persona = teclado.nextLine();
+
+        //Método para verificar que la persona en cuestión existe
+
 
     }
 }

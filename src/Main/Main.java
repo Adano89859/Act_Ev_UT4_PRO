@@ -13,8 +13,11 @@ public class Main {
         //Recurrimos a este metodo para crear las habitaciones y un array que las contenga
         habitaciones[][]Hotel = inicializarPlantasHabitaciones();
 
+        //Inicializamos un array con los clientes posibles
+        clientes[] listaClientes = inicializadorClientes();
+
         //Uso el array de Hotel que contiene las habitaciones y lo introduzco en el constructor del Gestor
-        Gestor_Hotel gestorHotel = inicializarGestor_Hotel(Hotel);
+        Gestor_Hotel gestorHotel = inicializarGestor_Hotel(Hotel,listaClientes);
 
         //Inicializamos el Scanner para recoger la información por teclado
         Scanner teclado = new Scanner(System.in);
@@ -24,11 +27,6 @@ public class Main {
         
         //Cargamos la vista
         MainVista mainVista = new MainVista();
-
-        // Creamos un array de clientes e inicializamos a tamaño a 100 de clientes
-        // y creamos un contador que almacenara el numero de clientes que se registran
-        clientes[] listaClientes = new clientes[100];
-        int numClientes = 0;
 
         //Opciones referentes al Menú, Bienvenida y las opciones permitidas
         mainVista.mostrarBienvenida();
@@ -61,7 +59,7 @@ public class Main {
                     break;
                     case 6:
                         // Traemos del gestor el resumen de los clientes
-                        gestorHotel.resumenCliente(listaClientes);
+                        gestorHotel.resumenCliente();
                     break;
                     case 7:
                     
@@ -109,10 +107,30 @@ public class Main {
         return Hotel;
     }
 
-    public static Gestor_Hotel inicializarGestor_Hotel(habitaciones[][]Hotel){
+    /*
+    Este método inicializa el Gestor, introduciendo en él los valores que necesita
+     */
+    public static Gestor_Hotel inicializarGestor_Hotel(habitaciones[][]Hotel, clientes[] listaClientes){
         //Creo el objeto
-        Gestor_Hotel gestorHotel = new Gestor_Hotel(Hotel);
+        Gestor_Hotel gestorHotel = new Gestor_Hotel(Hotel,listaClientes);
         //Devuelvo el objeto para que pueda ser usado en main
         return gestorHotel;
     }
+
+    /*
+    Este método crea un array con los Clientes que tendrá el sistema
+     */
+    public static clientes[] inicializadorClientes(){
+        // Creamos un array de clientes e inicializamos a tamaño a 5 de clientes
+        clientes[] listaClientes = new clientes[5];
+        //Introducimos en él los ejemplos de clientes que usaremos
+        listaClientes[0] = new clientes(1,"ClienteEjemplo","");
+        listaClientes[1] = new clientes(2,"Kevin","");
+        listaClientes[2] = new clientes(3,"Adán","");
+        listaClientes[3] = new clientes(4,"Josue","");
+        listaClientes[4] = new clientes(5,"Mer","");
+        //Devolvemos el array creado
+        return listaClientes;
+    }
+
 }
