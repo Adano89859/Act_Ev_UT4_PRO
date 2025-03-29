@@ -58,7 +58,8 @@ public class Main {
                     
                     break;
                     case 4:
-                    
+                        //Metodo para ver todas las reservas activas
+                        gestorHotel.buscarReservasActivas();
                     break;
                     case 5:
                         // Traemos del gestor el resumen de las habitaciones

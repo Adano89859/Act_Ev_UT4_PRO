@@ -284,4 +284,49 @@ public class Gestor_Hotel {
         return null;
     }
 
+    /*
+    Resultado: Este método te muestra la información de las reservas de un cliente
+     */
+    public void buscarReservasActivasCliente(){
+
+
+
+    }
+
+    /*
+    Resultado: Este método muestra todas las reservas activas y su información
+     */
+    public void buscarReservasActivas(){
+        //Compruebo que existan reservas
+        if(verificadorExistenReservas()){
+            //Recorro las reservas que existen
+            for(reservas reserva:listaReservas){
+                //Muestro la información de las reservas
+                System.out.println("-------------------------------------------");
+                System.out.println("La reserva con id "+reserva.getId()+" está a nombre de "+reserva.getcliente()+",");
+                System.out.println("se reserva la habitación "+reserva.gethabitacion()+" desde "+reserva.getcheck_in()+" hasta "+reserva.getcheck_out()+",");
+                System.out.println("con un precio total de "+reserva.getprecio()+" euros.");
+                System.out.println("-------------------------------------------");
+            }
+        }else{
+            //Informo de que no hay reservas en el sistema
+            System.out.println("No existen reservas realizadas en el sistema");
+        }
+    }
+
+    /*
+    @return Booleano que dice si existen reservas
+    Resultado: Método para verificar si existen reservas
+     */
+    public boolean verificadorExistenReservas(){
+        //Uso el método "isEmpty()" para comprobar si está vacio
+        if(!listaReservas.isEmpty()){
+            //Si el array de reservas está vacío, devuelvo false
+            return false;
+        }else{
+            //Si el array no está vacío, devuelvo true
+            return true;
+        }
+    }
+
 }
