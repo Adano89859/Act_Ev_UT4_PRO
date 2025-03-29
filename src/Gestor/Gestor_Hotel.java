@@ -142,13 +142,20 @@ public class Gestor_Hotel {
                                 //Cambio el estado de la habitación a reservado
                                 cambiarEstadoHabitaciónAReservado(habitacionReservar);
 
+                                //Introduzco esta reserva como un elemento del historial del Cliente
+                                String historial_estaReserva_usuario = "El id de esta reserva es ";
+                                historial_estaReserva_usuario.concat(String.valueOf(id));
+                                historial_estaReserva_usuario.concat(", la habitación reservada es "+habitacionConcreta.getNumeroHabitacion()+", con la fecha de check-in "+fechaCheckIn);
+                                historial_estaReserva_usuario.concat("y la fecha check-out" +fechaCheckOut+ ",a un precio total de "+precioNoches+" euros.");
+
                                 //Meto la reserva en el listado de reservas y la creo
                                 listaReservas.add(new reservas(id,obtenerHabitacionConcreta(habitacionReservar),obtenerClienteConcreto(persona), fechaCheckIn,fechaCheckOut,precioNoches));
                             }
                         }
                     }
+                }else{
+                    System.out.println("ERROR: La habitación que seleccionó no está disponible");
                 }
-
             }else{
                 System.out.println("ERROR: La habitación que seleccionó no existe");
             }
