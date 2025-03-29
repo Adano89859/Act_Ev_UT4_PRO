@@ -71,6 +71,8 @@ public class Gestor_Hotel {
             System.out.println("ID cliente: " + cliente.getId());
             System.out.println("Nombre del cliente: " + cliente.getNombre());
             System.out.println("Historial del cliente: " + cliente.getHistorial());
+            //Llamo al método para mostrar las reservas que tiene este cliente
+            buscarReservasActivasCliente(cliente);
             System.out.println("-------------------------------------------");
 
         }
@@ -132,10 +134,13 @@ public class Gestor_Hotel {
 
                                 //Obtengo el precio total que tendrá la reserva en base a las noches y la habitación
                                 habitaciones habitacionConcreta = obtenerHabitacionConcreta(habitacionReservar);
-                                double precioNoches = (habitacionConcreta.getprecio_noche()+fechaCheckOutEnInt);
+                                double precioNoches = (habitacionConcreta.getprecio_noche()*fechaCheckOutEnInt);
 
                                 //Para obtenter el id de la reserva, extraigo cual debería ser ahora su posición en el array
                                 int id = listaReservas.size();
+
+                                //Cambio el estado de la habitación a reservado
+                                cambiarEstadoHabitaciónAReservado(habitacionReservar);
 
                                 //Meto la reserva en el listado de reservas y la creo
                                 listaReservas.add(new reservas(id,obtenerHabitacionConcreta(habitacionReservar),obtenerClienteConcreto(persona), fechaCheckIn,fechaCheckOut,precioNoches));
@@ -287,9 +292,19 @@ public class Gestor_Hotel {
     /*
     Resultado: Este método te muestra la información de las reservas de un cliente
      */
-    public void buscarReservasActivasCliente(){
-
-
+    public void buscarReservasActivasCliente(clientes cliente){
+        //Recorro el listado de reservas que existen
+        for(reservas reserva:listaReservas){
+            //Compruebo que la reserva tiene el mismo cliente que el cliente introducido
+            if(reserva.getcliente()==cliente){
+                //Doy la información sobre dicha reserva
+                System.out.println("-------------------------------------------");
+                System.out.println("La reserva de "+cliente.getNombre()+" tiene el id "+reserva.getId()+",");
+                System.out.println("se reserva la habitación "+reserva.gethabitacion().getNumeroHabitacion()+" desde "+reserva.getcheck_in()+" hasta "+reserva.getcheck_out()+",");
+                System.out.println("con un precio total de "+reserva.getprecio()+" euros.");
+                System.out.println("-------------------------------------------");
+            }
+        }
 
     }
 
@@ -303,8 +318,8 @@ public class Gestor_Hotel {
             for(reservas reserva:listaReservas){
                 //Muestro la información de las reservas
                 System.out.println("-------------------------------------------");
-                System.out.println("La reserva con id "+reserva.getId()+" está a nombre de "+reserva.getcliente()+",");
-                System.out.println("se reserva la habitación "+reserva.gethabitacion()+" desde "+reserva.getcheck_in()+" hasta "+reserva.getcheck_out()+",");
+                System.out.println("La reserva con id "+reserva.getId()+" está a nombre de "+reserva.getcliente().getNombre()+",");
+                System.out.println("se reserva la habitación "+reserva.gethabitacion().getNumeroHabitacion()+" desde "+reserva.getcheck_in()+" hasta "+reserva.getcheck_out()+",");
                 System.out.println("con un precio total de "+reserva.getprecio()+" euros.");
                 System.out.println("-------------------------------------------");
             }
@@ -320,12 +335,29 @@ public class Gestor_Hotel {
      */
     public boolean verificadorExistenReservas(){
         //Uso el método "isEmpty()" para comprobar si está vacio
-        if(!listaReservas.isEmpty()){
+        if(listaReservas.isEmpty()){
             //Si el array de reservas está vacío, devuelvo false
             return false;
         }else{
             //Si el array no está vacío, devuelvo true
             return true;
+        }
+    }
+
+    /*
+    @param Trae el número de la habitación de la habitación concreta que va a ser alterada
+    Resultado: Cambia el estado de la habitación seleccionada a "Reservado"
+     */
+    public void cambiarEstadoHabitaciónAReservado(int habitacionConcreta){
+        for(habitaciones[] planta:Hotel){
+            //Del desglosado previo, voy sacando el número de cada habitación
+            for(habitaciones habitacion:planta){
+                //Filtro que sea la habitación de la que estamos tratando
+                if(habitacionConcreta == habitacion.getNumeroHabitacion()){
+                    //Cambio el estado de la habitación a Reservado
+                    habitacion.setestado(Estado.RESERVADA);
+                }
+            }
         }
     }
 
