@@ -4,7 +4,11 @@ import Gestor.Gestor_Hotel;
 import Gestor.Tipo_Habitacion;
 import Modelos.clientes;
 import Modelos.habitaciones;
+
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import Modelos.reservas;
 import Vista.MainVista;
 
 public class Main {
@@ -16,8 +20,11 @@ public class Main {
         //Inicializamos un array con los clientes posibles
         clientes[] listaClientes = inicializadorClientes();
 
+        //Inicializamos el array de las reservas, que empieza vacío
+        ArrayList<reservas> listaReservas = inicializadorReservas();
+
         //Uso el array de Hotel que contiene las habitaciones y lo introduzco en el constructor del Gestor
-        Gestor_Hotel gestorHotel = inicializarGestor_Hotel(Hotel,listaClientes);
+        Gestor_Hotel gestorHotel = inicializarGestor_Hotel(Hotel,listaClientes, listaReservas);
 
         //Inicializamos el Scanner para recoger la información por teclado
         Scanner teclado = new Scanner(System.in);
@@ -110,9 +117,9 @@ public class Main {
     /*
     Este método inicializa el Gestor, introduciendo en él los valores que necesita
      */
-    public static Gestor_Hotel inicializarGestor_Hotel(habitaciones[][]Hotel, clientes[] listaClientes){
+    public static Gestor_Hotel inicializarGestor_Hotel(habitaciones[][]Hotel, clientes[] listaClientes, ArrayList<reservas> listaReservas){
         //Creo el objeto
-        Gestor_Hotel gestorHotel = new Gestor_Hotel(Hotel,listaClientes);
+        Gestor_Hotel gestorHotel = new Gestor_Hotel(Hotel,listaClientes,listaReservas);
         //Devuelvo el objeto para que pueda ser usado en main
         return gestorHotel;
     }
@@ -131,6 +138,16 @@ public class Main {
         listaClientes[4] = new clientes(5,"Mer","");
         //Devolvemos el array creado
         return listaClientes;
+    }
+
+    /*
+    Este método crea un arrayList que contendrá las reservas
+     */
+    public static ArrayList<reservas> inicializadorReservas(){
+        //Creo el arrayList de las reservas, que por ahora está vacío
+        ArrayList<reservas> listaReservas = new ArrayList<>();
+        //Devolvemos el arrayList de las reservas
+        return listaReservas;
     }
 
 }

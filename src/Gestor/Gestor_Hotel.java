@@ -2,7 +2,11 @@ package Gestor;
 
 import Modelos.habitaciones;
 import Modelos.clientes;
+import Modelos.reservas;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Gestor_Hotel {
@@ -10,12 +14,15 @@ public class Gestor_Hotel {
     //Atributos de la clase Gestor_Hotel
     habitaciones[][]Hotel;
     clientes[] listaClientes;
+    ArrayList<reservas> listaReservas;
+
     /*
     //CONSTRUCTOR de la clase Gestor_Hotel
      */
-    public Gestor_Hotel(habitaciones[][]Hotel, clientes[] listaClientes) {
+    public Gestor_Hotel(habitaciones[][]Hotel, clientes[] listaClientes, ArrayList<reservas> listaReservas) {
         this.Hotel = Hotel;
         this.listaClientes = listaClientes;
+        this.listaReservas = listaReservas;
     }
 
     /*
@@ -88,11 +95,58 @@ public class Gestor_Hotel {
 
             //Le pido al usuario la habitación que quiere
             System.out.println("Introduce el número de la habitación que deseas reservar:");
-            String habitacionReservar = teclado.nextLine();
+            int habitacionReservar = teclado.nextInt();
 
             //Verifico que la habitación seleccionada existe
+            if(verificadorHabitaciónExiste(habitacionReservar)){
+                //Compruebo que la habitación seleccionada está disponible
+                if(verificadorHabitaciónDisponible(habitacionReservar)){
+                    //Le pregunto al usuario cuándo quiere iniciar su reserva
+                    System.out.println("Introduce dentro de cuántos días quieres iniciar el check-in (Máximo en 90):");
+                    int fechaCheckInEnInt = teclado.nextInt();
 
+                    //Compruebo que la fecha de check in está en un rango válido
+                    if(fechaCheckInEnInt<1){
+                        System.out.println("ERROR: La fecha de check-in debe ser en al menos 1 día");
+                    }else{
+                        //Compruebo que no se excede del rango permitido
+                        if(fechaCheckInEnInt>90){
+                            System.out.println("ERROR: La fecha de check-in no debe superar el plazo de 90 días");
+                        }else{
+                            //Ahora que las comprobaciones se han realizado correctamente, podemos seguir trabajando
+                            //Saco la fecha actual
+                            LocalDateTime fechaActual = LocalDateTime.now();
+                            //Sumo la fecha actual a dentro de cuanto será el check-in
+                            LocalDateTime fechaCheckIn = fechaActual.plusDays(fechaCheckInEnInt);
 
+                            //Pregunto cuántas noches será la reserva
+                            System.out.println("¿Cuántas noches desea hospedarse?");
+                            int fechaCheckOutEnInt = teclado.nextInt();
+
+                            //Compruebo que la cantidad de noches no sea negativa
+                            if(fechaCheckOutEnInt<1){
+                                System.out.println("ERROR: No puede reservar menos de 1 noche");
+                            }else{
+                                //Creo la fecha de check-out
+                                LocalDateTime fechaCheckOut = fechaCheckIn.plusDays(fechaCheckOutEnInt);
+
+                                //Obtengo el precio total que tendrá la reserva en base a las noches y la habitación
+                                habitaciones habitacionConcreta = obtenerHabitacionConcreta(habitacionReservar);
+                                double precioNoches = (habitacionConcreta.getprecio_noche()+fechaCheckOutEnInt);
+
+                                //Para obtenter el id de la reserva, extraigo cual debería ser ahora su posición en el array
+                                int id = listaReservas.size();
+
+                                //Meto la reserva en el listado de reservas y la creo
+                                listaReservas.add(new reservas(id,obtenerHabitacionConcreta(habitacionReservar),obtenerClienteConcreto(persona), fechaCheckIn,fechaCheckOut,precioNoches));
+                            }
+                        }
+                    }
+                }
+
+            }else{
+                System.out.println("ERROR: La habitación que seleccionó no existe");
+            }
         }else{
             System.out.println("ERROR: La persona que seleccionó no existe");
         }
@@ -154,19 +208,80 @@ public class Gestor_Hotel {
         }
     }
 
-
-    public boolean verificadorHabitaciónExiste(String habitacionConcreta){
+    /*
+    @param Pide el número de la habitación
+    @return Devuelve true si la habitación existe, o false si la habitación no existe
+    Resultado: Se le introduce un número que supuestamente es de una habitación, te devuelve true si existe, o false si no existe
+     */
+    public boolean verificadorHabitaciónExiste(int habitacionConcreta){
         for(habitaciones[] planta:Hotel){
             //Del desglosado previo, voy sacando el número de cada habitación
             for(habitaciones habitacion:planta){
-                if(habitacionConcreta.equals(habitacion.getNumeroHabitacion())){
+                if(habitacionConcreta == habitacion.getNumeroHabitacion()){
                     return true;
                 }
             }
         }
-
         //Devuelvo false en caso de que no exista dicha habitación
         return false;
+    }
+
+    /*
+    @param Recoge el número de la habitación concreta
+    @return Devuelve true si la habitación existe y está disponible, devuelve false si no está disponible o no existe
+    Resultado: Este método pide el número de una habitación y te informa de si esa habitación existe y de si está disponible;
+    según su resultado de true o false
+     */
+    public boolean verificadorHabitaciónDisponible(int habitacionConcreta){
+        for(habitaciones[] planta:Hotel){
+            //Del desglosado previo, voy sacando el número de cada habitación
+            for(habitaciones habitacion:planta){
+                //Filtro que sea la habitación de la que estamos tratando
+                if(habitacionConcreta == habitacion.getNumeroHabitacion()){
+                    //Compruebo que la habitación está disponible
+                    if(habitacion.getestado() == Estado.DISPONIBLE){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /*
+    @param Número de la habitación
+    @return Objeto habitación
+    Resultado: Este método requiere un número, y en base a ese, recorre el array del hotel para devolver la habitación concreta con ese número
+     */
+    public habitaciones obtenerHabitacionConcreta(int habitacionConcreta){
+        for(habitaciones[] planta:Hotel){
+            //Del desglosado previo, voy sacando el número de cada habitación
+            for(habitaciones habitacion:planta){
+                //Filtro que sea la habitación de la que estamos tratando
+                if(habitacionConcreta == habitacion.getNumeroHabitacion()){
+                    //Devuelvo el objeto habitación concreto que tiene el número indicado
+                    return habitacion;
+                }
+            }
+        }
+        return null;
+    }
+
+    /*
+    @param Nombre del cliente
+    @return Objeto cliente
+    Resultado: A partir del nombre del cliente introducido, devuelve el objeto cliente que tenga ese nombre
+     */
+    public clientes obtenerClienteConcreto(String clienteConcreto){
+        //Recorro el listado de clientes existentes
+        for(clientes cliente:listaClientes){
+            //Filtro que estemos tratando con el cliente concreto
+            if(clienteConcreto.equals(cliente.getNombre())){
+                //Si es ese cliente, devolvemos el objeto cliente
+                return cliente;
+            }
+        }
+        return null;
     }
 
 }

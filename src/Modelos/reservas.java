@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class reservas {
 
     //Atributos de la clase Reserva
-    private String id;
+    private int id;
     private habitaciones habitacion;
     private clientes cliente;
     private LocalDateTime check_in;
@@ -13,7 +13,7 @@ public class reservas {
     private double precio;
 
     //CONSTRUCTOR de la clase reserva
-    public reservas(String id,habitaciones habitacion,clientes cliente,LocalDateTime check_in,LocalDateTime check_out,double precio){
+    public reservas(int id,habitaciones habitacion,clientes cliente,LocalDateTime check_in,LocalDateTime check_out,double precio){
         this.id = id;
         this.habitacion = habitacion;
         this.cliente = cliente;
@@ -23,7 +23,7 @@ public class reservas {
     }
 
     //Los SETTER
-    public void setId(String id){
+    public void setId(int id){
         this.id = id;
     }
 
@@ -48,7 +48,7 @@ public class reservas {
     }
 
     //Los GETTER
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
