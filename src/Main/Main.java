@@ -52,9 +52,11 @@ public class Main {
                     gestorHotel.crearReserva();
                     break;
                     case 2:
+                    gestorHotel.cancelarReservaPorCliente();
                     
                     break;
                     case 3:
+                    gestorHotel.buscarHabitaciones();
                     
                     break;
                     case 4:
