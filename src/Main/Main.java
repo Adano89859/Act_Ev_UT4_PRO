@@ -132,11 +132,11 @@ public class Main {
         // Creamos un array de clientes e inicializamos a tamaño a 5 de clientes
         clientes[] listaClientes = new clientes[5];
         //Introducimos en él los ejemplos de clientes que usaremos
-        listaClientes[0] = new clientes(1,"ClienteEjemplo","");
-        listaClientes[1] = new clientes(2,"Kevin","");
-        listaClientes[2] = new clientes(3,"Adán","");
-        listaClientes[3] = new clientes(4,"Josue","");
-        listaClientes[4] = new clientes(5,"Mer","");
+        listaClientes[0] = new clientes(1,"ClienteEjemplo");
+        listaClientes[1] = new clientes(2,"Kevin");
+        listaClientes[2] = new clientes(3,"Adán");
+        listaClientes[3] = new clientes(4,"Josue");
+        listaClientes[4] = new clientes(5,"Mer");
         //Devolvemos el array creado
         return listaClientes;
     }

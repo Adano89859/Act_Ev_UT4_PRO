@@ -73,10 +73,10 @@ public class Gestor_Hotel {
             System.out.println("Historial del cliente: " + cliente.getHistorial());
             //Llamo al método para mostrar las reservas que tiene este cliente
             buscarReservasActivasCliente(cliente);
+            //Llamo a otro método que muestra el historial del cliente
+            buscarHistorialCliente(cliente);
             System.out.println("-------------------------------------------");
-
         }
-
     }
 
     /*
@@ -143,10 +143,8 @@ public class Gestor_Hotel {
                                 cambiarEstadoHabitaciónAReservado(habitacionReservar);
 
                                 //Introduzco esta reserva como un elemento del historial del Cliente
-                                String historial_estaReserva_usuario = "El id de esta reserva es ";
-                                historial_estaReserva_usuario.concat(String.valueOf(id));
-                                historial_estaReserva_usuario.concat(", la habitación reservada es "+habitacionConcreta.getNumeroHabitacion()+", con la fecha de check-in "+fechaCheckIn);
-                                historial_estaReserva_usuario.concat("y la fecha check-out" +fechaCheckOut+ ",a un precio total de "+precioNoches+" euros.");
+                                String historial_estaReserva_usuario = "El id de esta reserva es "+String.valueOf(id)+", la habitación reservada es "+habitacionConcreta.getNumeroHabitacion()+", con la fecha de check-in "+fechaCheckIn+" y la fecha check-out" +fechaCheckOut+ ",a un precio total de "+precioNoches+" euros.";
+                                introducirHistorialCliente(persona,historial_estaReserva_usuario);
 
                                 //Meto la reserva en el listado de reservas y la creo
                                 listaReservas.add(new reservas(id,obtenerHabitacionConcreta(habitacionReservar),obtenerClienteConcreto(persona), fechaCheckIn,fechaCheckOut,precioNoches));
@@ -366,6 +364,30 @@ public class Gestor_Hotel {
                 }
             }
         }
+    }
+
+    /*
+    @param Pide el nombre del usuario que va a ser modificado y el historial que se le va a introducir
+    Resultado: Introduce el historial de la reserva en el cliente seleccionado
+     */
+    public void introducirHistorialCliente(String persona, String historial){
+        for(clientes cliente:listaClientes){
+            //Filtro que estemos tratando con el cliente concreto
+            if(persona.equals(cliente.getNombre())){
+                //Si es ese cliente, le introducimos el historial
+                cliente.setHistorial(historial);
+            }
+        }
+    }
+
+    /*
+    param Pido el objeto cliente del que se va a tratar
+    Resultado: A partir del objeto cliente solicitado, devuelvo la información de su arrayList de historial
+     */
+    public void buscarHistorialCliente(clientes cliente){
+        //Muestro el historial del cliente
+        System.out.println("El historial de "+cliente.getNombre()+" es:");
+        System.out.println(cliente.getHistorial());
     }
 
 }
