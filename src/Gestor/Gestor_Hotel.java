@@ -159,6 +159,8 @@ public class Gestor_Hotel {
             System.out.println("ERROR: La persona que seleccionó no existe");
         }
 
+        teclado.close();
+
     }
 
     /*
@@ -275,6 +277,42 @@ public class Gestor_Hotel {
         return null;
     }
 
+
+    public void buscarHabitaciones(){
+
+        Scanner teclado = new Scanner(System.in);
+        // Menú mostrando los tipos de habitaciones
+        System.out.println("Tipos de habitaciones: ");
+        System.out.println("1. Habitación individual: (Estándar para 1 persona). ");
+        System.out.println("2. Habitación dual: (Estándar para 2 personas). ");
+        System.out.println("3. Habitación suite: (Ideal para colectivos y familias numerosas). ");
+
+        // Pide al usuario que ingrese el numero de la habitación
+        System.out.println("Escribe el numero de la habitación a buscar: ");
+        int option = teclado.nextInt();
+
+        // Traemos de la clase habitaciones la habitación solicitada mediante el metodo de obtenerHabitaciononcreta
+        habitaciones habitacionSeleccionada = obtenerHabitacionConcreta(option);
+
+        // Devolvemos el objeto habitación con su información relacionada (true)
+        // Devuelve false si no se encuentra el numero de habitación o si no existe
+        if (habitacionSeleccionada != null) {
+            System.out.println("Número de habitación: " + habitacionSeleccionada.getNumeroHabitacion());
+            System.out.println("Tipo de habitación: " + habitacionSeleccionada.gettipoHabitacion());
+            System.out.println("Estado de habitación: " + habitacionSeleccionada.getestado());
+            System.out.println("Descripción de la habitación: " + habitacionSeleccionada.getdescripcion());
+            System.out.println("Precio por noche: " + habitacionSeleccionada.getprecio_noche());
+            
+        } else {
+            System.out.println("No se ha encontrado la habitación con número: " + habitacionSeleccionada.getNumeroHabitacion());
+        }
+        
+        System.out.println("La habitación no existe ");
+
+        teclado.close();        
+    }
+
+
     /*
     @param Nombre del cliente
     @return Objeto cliente
@@ -291,6 +329,72 @@ public class Gestor_Hotel {
         }
         return null;
     }
+
+    /*
+     * @param Nombre del cliente, Id de la reserva
+     * @return Objeto Cliente, Objeto Reserva (Eliminar)
+     * Resultado: El cliente seleccionado eliminara la reserva registrada mediante su Id (codigo de reserva)
+     */
+    public void cancelarReservaPorCliente() {
+
+        Scanner teclado = new Scanner(System.in);
+        // Pedimos por teclado el nombre del cliente que desea eiminar la reserva
+        System.out.println("Seleccione el cliente que quiere cancelar la reserva: ");
+        String nombreCliente = teclado.nextLine();
+
+        // Obtenemos de la clase cliente el cliente seleccionado llamando al metodo obtenerClienteConcreto
+        clientes clienteSeleccionado = obtenerClienteConcreto(nombreCliente);
+
+        /*
+         * Evaluamos si el cliente existe y está registrado en el sistema
+         * Preguntamos si el cliente de verdad va a cancelar la reserva antes de continuar
+         * Evaluamos la acción según la desición del cliente (si/no)
+         */
+        if (clienteSeleccionado != null) {
+            System.out.println("El cliente "+ clienteSeleccionado + "ha sido seleccionado.");
+            System.out.println("El " + clienteSeleccionado +": ¿Desea cancelar la reseva (s/n)?");
+            String option = teclado.nextLine();
+
+            // Acciones si la desición del cliente es (s) "si"
+            if (option.equals("s")) {
+                //Pedimos por teclado que introduzca el código de su reserva 
+                System.out.println("Introduzca el código de su reserva ");
+                int idReserva = teclado.nextInt();
+                
+                //Recorro el listado de reservas exitente
+                for (reservas Reserva : listaReservas) {
+                    // Filtramos la fecha de la reserva
+                    LocalDateTime fechaReserva = LocalDateTime.now();
+                    // Comprobamos si la reserva aún no ha comenzado
+                    // Devuelve false si no existe o si ya ha comenzado la reserva
+                    if (Reserva.getId() == idReserva) {
+                        if (Reserva.getcheck_in().isBefore(fechaReserva)) {
+                            System.out.println("Error: la reserva ya ha comenzado " + Reserva.getcheck_in());
+                        } else {
+                            // Devuelve true si se cumple la condición elimina la reserva
+                            listaReservas.remove(Reserva);
+                            System.out.println("Reserva eliminada correctamente ");
+                            return;
+                            
+                        }
+                    }
+
+                    System.out.println("Error: no se ha encontrado una reserva con el id: " + idReserva);
+                    return;
+                }
+            } else {
+                // Acciones si la desición del cliente es (n) "no"
+                System.out.println("Cancelando operación...");
+                return;
+            }
+
+        } else {
+            System.out.println("Lo sentimos, no se ha encontrado un cliente con ese nombre");
+            return;
+        }
+        teclado.close();
+    }
+
 
     /*
     Resultado: Este método te muestra la información de las reservas de un cliente
