@@ -73,8 +73,6 @@ public class Gestor_Hotel {
             System.out.println("Historial del cliente: " + cliente.getHistorial());
             //Llamo al método para mostrar las reservas que tiene este cliente
             buscarReservasActivasCliente(cliente);
-            //Llamo a otro método que muestra el historial del cliente
-            buscarHistorialCliente(cliente);
             System.out.println("-------------------------------------------");
         }
     }
