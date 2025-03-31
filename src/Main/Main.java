@@ -53,11 +53,9 @@ public class Main {
                     break;
                     case 2:
                     gestorHotel.cancelarReservaPorCliente();
-                    
                     break;
                     case 3:
                     gestorHotel.buscarHabitaciones();
-                    
                     break;
                     case 4:
                         //Metodo para ver todas las reservas activas
@@ -72,7 +70,8 @@ public class Main {
                         gestorHotel.resumenCliente();
                     break;
                     case 7:
-                    
+                        // Treaemos del gestor el método para calcular el precio de renta por noches
+                        gestorHotel.calcularPrecioHabitacion();
                     break;
                     case 8:
                         // Traemos de la vista el texto de despedida
@@ -137,7 +136,7 @@ public class Main {
         listaClientes[0] = new clientes(1,"ClienteEjemplo");
         listaClientes[1] = new clientes(2,"Kevin");
         listaClientes[2] = new clientes(3,"Adán");
-        listaClientes[3] = new clientes(4,"Josue");
+        listaClientes[3] = new clientes(4,"Josué");
         listaClientes[4] = new clientes(5,"Mer");
         //Devolvemos el array creado
         return listaClientes;

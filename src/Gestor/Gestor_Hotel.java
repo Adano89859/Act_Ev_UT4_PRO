@@ -4,8 +4,8 @@ import Modelos.habitaciones;
 import Modelos.clientes;
 import Modelos.reservas;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -277,7 +277,6 @@ public class Gestor_Hotel {
         return null;
     }
 
-
     public void buscarHabitaciones(){
 
         Scanner teclado = new Scanner(System.in);
@@ -492,4 +491,125 @@ public class Gestor_Hotel {
         System.out.println(cliente.getHistorial());
     }
 
+    /*
+     *@Param: Solicitamos el objeto cliente y el objeto reserva
+     * Resultado: el cliente selecciona su reserva en base al tipo de habitación y
+     * calculamos el precio de la habitación por el numero de noches hospedadas 
+     */
+
+    public void calcularPrecioHabitacion(){
+        Scanner teclado = new Scanner(System.in);
+
+        // Pedimos por teclado el nombre del cliente que desea calcular la reserva
+        System.out.println("Seleccione el cliente que quiere calcular la reserva: ");
+        String nombreCliente = teclado.nextLine();
+ 
+        // Obtenemos de la clase cliente el cliente seleccionado llamando al metodo obtenerClienteConcreto
+        clientes clienteSeleccionado = obtenerClienteConcreto(nombreCliente);
+
+        /*
+         * Evaluamos si el cliente existe y está registrado en el sistema
+         * Preguntamos si el cliente de verdad quiere calcular el precio de su reserva antes de continuar
+         * Evaluamos la acción según la desición del cliente (si/no)
+         */
+
+        if (clienteSeleccionado != null) {
+            System.out.println("El cliente "+ clienteSeleccionado + "ha sido seleccionado.");
+            System.out.println("El " + clienteSeleccionado +": ¿Desea calcular la reseva e imprimir ticket (s/n)?");
+            String option = teclado.nextLine();
+
+            // Acciones si la desición del cliente es (s) "si"
+            if (option.equals("s")) {
+
+                // Solicitamos el id de la reserva y la buscamos en la linta de reservas
+                System.out.println("Introduzca el código de su reserva: ");
+                int reservaID = teclado.nextInt();
+
+                for (reservas Reserva : listaReservas) {
+                    // Verificamos que la reserva existe
+                    if (Reserva.getId() == reservaID) {
+                        // listamos las reservas que tiene disponible el cliente
+                        System.out.println("|--Listando las reservas disponibles--| ");
+                        System.out.println("ID: " + Reserva.getId());
+                        System.out.println("Habitación: " + Reserva.gethabitacion());
+                        System.out.println("Precio por noche inicial: " + Reserva.getprecio());
+                        System.out.println("|------------------------------------|");
+
+
+                        // Inicializo los parametros necesarios para calcular el precio de la habitación
+                        // por noche según su tipo
+                        double precioPorNoche = 0;
+                        String tipoHabitacion = " ";
+
+                        /*
+                        * Solicitamos por teclado que seleccione un tipo de habitación
+                        * caso1: selecciona una suite
+                        * caso2: selecciona una habitación dual
+                        * caso3: selecciona una habitación individual 
+                        */
+                        System.out.println("Seleccione una habitación: ");
+                        String desition = teclado.nextLine();
+
+                        switch (desition) {
+                            case "SUITE":
+                            System.out.println("Selección de habitaciones suite");
+                                precioPorNoche = 3000;
+                                tipoHabitacion = "HABITACIÓN SUITE";
+                                break;
+                            case "DOBLE":
+                            System.out.println("Selección de habitaciones estándar doble");
+                                precioPorNoche = 1000;
+                                tipoHabitacion = "HABITACIÓN DOBLE";
+                                break;
+                            case "Individual":
+                            System.out.println("Selección de habitaciones estándar individuales");
+                                precioPorNoche = 500;
+                                tipoHabitacion = "HABITACIÓN INDIVIDUAL";
+                                break;
+                        
+                            default:
+                            System.out.println("Error: opcion no valida, intentelo de nuevo.");
+                                return;
+                        }
+                    
+                        /*
+                        * Utilizamos la librería ChronoUnit para optimizar el plazo que dure la reserva
+                        * es decir, el número de moches que dure la reserva para calcular el precio, entre
+                        * su fecha de inicio y fecha de fin del plazo de la reserva 
+                        */
+                        long noches = ChronoUnit.DAYS.between(
+                        Reserva.getcheck_in().toLocalDate(),
+                        Reserva.getcheck_out().toLocalDate());
+                        
+                        // Calculamos el precio total de la habitación por el número de noches hospedadas
+                        double totalPrecio = noches * precioPorNoche;
+
+                        // Imprimimos los resultados con la información de la habitación con su precio estándar
+                        // y su precio total por noches.
+                        System.out.println(" |--RESUMEN DE LA RESERVA: --| ");
+                        System.out.println("Tipo de reserva: " + tipoHabitacion);
+                        System.out.println("Noches de la reserva " + noches);
+                        System.out.println("Precio de reserva/noche: " + precioPorNoche + "€");
+                        System.out.println("Subtotal: " + totalPrecio + "€");
+                        System.out.println(" |--------------------------|");
+
+                    } else {
+                        // Devuelve false si la reserva no existe o no se ha registrado en el sistema 
+                        System.out.println("ERROR: la reserva no existe o no se ha registrado correctamente.");
+                    }
+                    return;
+                }
+
+            } else {
+                // Acciones si la desición del cliente es (n) "no"
+                System.out.println("Cancelando operación...");
+                return;
+            }
+            
+        } else {
+            // Devuelve false si el cliente no está registrado en el sistema o no existe
+            System.out.println("ERROR: Lo sentimos, no hay registrado ningún cliente con ese nombre");
+            return;
+        } 
+    }
 }
