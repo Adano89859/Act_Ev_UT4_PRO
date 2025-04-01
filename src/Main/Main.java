@@ -49,6 +49,11 @@ public class Main {
                 //Leemos la opción elegida por el usuario
                 eleccion = teclado.nextInt();
 
+                //Me aseguro de que la opción sea un int
+            } catch (InputMismatchException e) {
+                System.out.println("ERROR: debe ingresar un número entero ej: 1,2,3..." + e.getMessage());
+            }
+
                 //A partir de la opción elegida por el usuario, llamamos al método indicado
                 switch (eleccion) {
                     case 1:
@@ -85,11 +90,7 @@ public class Main {
                     default:
                         // Traemos de la vista el texto de opción inválida
                         mainVista.mostrarOpcionInvalida();
-                        throw new AssertionError();
                 }
-            } catch (InputMismatchException e) {
-                System.out.println("ERROR: debe ingresar un número entero ej: 1,2,3..." + e.getMessage());
-            }
         }while(eleccion !=8);
 
         //Cerramos el Scanner

@@ -296,29 +296,12 @@ public class Gestor_Hotel {
         System.out.println("2. Habitación dual: (Estándar para 2 personas). ");
         System.out.println("3. Habitación suite: (Ideal para colectivos y familias numerosas). ");
 
-        // Pide al usuario que ingrese el numero de la habitación
-        System.out.println("Escribe el numero de la habitación a buscar: ");
+        // Pide al usuario que ingrese el numero del tipo de habitación
+        System.out.println("Escribe el numero del tipo de habitación a buscar: ");
         int option = teclado.nextInt();
 
-        // Traemos de la clase habitaciones la habitación solicitada mediante el metodo de obtenerHabitaciononcreta
-        habitaciones habitacionSeleccionada = obtenerHabitacionConcreta(option);
-
-        // Devolvemos el objeto habitación con su información relacionada (true)
-        // Devuelve false si no se encuentra el numero de habitación o si no existe
-        if (habitacionSeleccionada != null) {
-            System.out.println("Número de habitación: " + habitacionSeleccionada.getNumeroHabitacion());
-            System.out.println("Tipo de habitación: " + habitacionSeleccionada.gettipoHabitacion());
-            System.out.println("Estado de habitación: " + habitacionSeleccionada.getestado());
-            System.out.println("Descripción de la habitación: " + habitacionSeleccionada.getdescripcion());
-            System.out.println("Precio por noche: " + habitacionSeleccionada.getprecio_noche());
-            
-        } else {
-            System.out.println("No se ha encontrado la habitación con número: " + habitacionSeleccionada.getNumeroHabitacion());
-        }
-        
-        System.out.println("La habitación no existe ");
-
-        teclado.close();        
+        //Mostramos las opciones que cumplen lo solicitado
+        mostrarHabitacionesFiltradas(option);
     }
 
 
@@ -687,6 +670,61 @@ public class Gestor_Hotel {
             return;
         } 
         teclado.close();
+    }
+
+    /*
+    @param Pide la selección filtradora de la categoría
+    Resultado: Muestra las habitaciones de esa categoría
+     */
+    public void mostrarHabitacionesFiltradas(int numeroFiltradorTipo){
+        //Muestro las habitaciones según el tipo especificado
+        switch (numeroFiltradorTipo){
+            case 1:
+                //Adquiero solo esa planta
+                habitaciones[] planta1 = Hotel[0];
+                    for(habitaciones habitacion:planta1){
+                        //Muestro las habitaciones de esa planta
+                        System.out.println(" |--------------------------|");
+                        System.out.println("Número de habitación: " + habitacion.getNumeroHabitacion());
+                        System.out.println("Tipo de habitación: " + habitacion.gettipoHabitacion());
+                        System.out.println("Estado de habitación: " + habitacion.getestado());
+                        System.out.println("Descripción de la habitación: " + habitacion.getdescripcion());
+                        System.out.println("Precio por noche: " + habitacion.getprecio_noche());
+                        System.out.println(" |--------------------------|");
+                    }
+                break;
+            case 2:
+                //Adquiero solo esa planta
+                habitaciones[] planta2 = Hotel[1];
+                for(habitaciones habitacion:planta2){
+                    //Muestro las habitaciones de esa planta
+                    System.out.println(" |--------------------------|");
+                    System.out.println("Número de habitación: " + habitacion.getNumeroHabitacion());
+                    System.out.println("Tipo de habitación: " + habitacion.gettipoHabitacion());
+                    System.out.println("Estado de habitación: " + habitacion.getestado());
+                    System.out.println("Descripción de la habitación: " + habitacion.getdescripcion());
+                    System.out.println("Precio por noche: " + habitacion.getprecio_noche());
+                    System.out.println(" |--------------------------|");
+                }
+                break;
+            case 3:
+                //Adquiero solo esa planta
+                habitaciones[] planta3 = Hotel[2];
+                for(habitaciones habitacion:planta3){
+                    //Muestro las habitaciones de esa planta
+                    System.out.println(" |--------------------------|");
+                    System.out.println("Número de habitación: " + habitacion.getNumeroHabitacion());
+                    System.out.println("Tipo de habitación: " + habitacion.gettipoHabitacion());
+                    System.out.println("Estado de habitación: " + habitacion.getestado());
+                    System.out.println("Descripción de la habitación: " + habitacion.getdescripcion());
+                    System.out.println("Precio por noche: " + habitacion.getprecio_noche());
+                    System.out.println(" |--------------------------|");
+                }
+                break;
+            default:
+                System.out.println("No seleccionó una opción válida");
+                break;
+        }
     }
 
 }
