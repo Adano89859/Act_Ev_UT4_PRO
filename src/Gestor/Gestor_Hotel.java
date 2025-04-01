@@ -561,6 +561,7 @@ public class Gestor_Hotel {
 
     public void calcularPrecioHabitacion(){
         Scanner teclado = new Scanner(System.in);
+        Scanner teclado2 = new Scanner(System.in);
 
         // Pedimos por teclado el nombre del cliente que desea calcular la reserva
         System.out.println("Seleccione el cliente que quiere calcular la reserva: ");
@@ -582,84 +583,20 @@ public class Gestor_Hotel {
 
             // Acciones si la desición del cliente es (s) "si"
             if (option.equals("s")) {
+                //Le muestro al cliente todas sus reservas
+                buscarReservasActivasClienteParaCalcularPrecio(clienteSeleccionado);
 
                 // Solicitamos el id de la reserva y la buscamos en la linta de reservas
                 System.out.println("Introduzca el código de su reserva: ");
-                int reservaID = teclado.nextInt();
+                int reservaID = teclado2.nextInt();
 
-                for (reservas Reserva : listaReservas) {
-                    // Verificamos que la reserva existe
-                    if (Reserva.getId() == reservaID) {
-                        // listamos las reservas que tiene disponible el cliente
-                        System.out.println("|--Listando las reservas disponibles--| ");
-                        System.out.println("ID: " + Reserva.getId());
-                        System.out.println("Habitación: " + Reserva.gethabitacion());
-                        System.out.println("Precio por noche inicial: " + Reserva.getprecio());
-                        System.out.println("|------------------------------------|");
-
-
-                        // Inicializo los parametros necesarios para calcular el precio de la habitación
-                        // por noche según su tipo
-                        double precioPorNoche = 0;
-                        String tipoHabitacion = " ";
-
-                        /*
-                        * Solicitamos por teclado que seleccione un tipo de habitación
-                        * caso1: selecciona una suite
-                        * caso2: selecciona una habitación dual
-                        * caso3: selecciona una habitación individual 
-                        */
-                        System.out.println("Seleccione una habitación: ");
-                        String desition = teclado.nextLine();
-
-                        switch (desition) {
-                            case "SUITE":
-                            System.out.println("Selección de habitaciones suite");
-                                precioPorNoche = 3000;
-                                tipoHabitacion = "HABITACIÓN SUITE";
-                                break;
-                            case "DOBLE":
-                            System.out.println("Selección de habitaciones estándar doble");
-                                precioPorNoche = 1000;
-                                tipoHabitacion = "HABITACIÓN DOBLE";
-                                break;
-                            case "Individual":
-                            System.out.println("Selección de habitaciones estándar individuales");
-                                precioPorNoche = 500;
-                                tipoHabitacion = "HABITACIÓN INDIVIDUAL";
-                                break;
-                        
-                            default:
-                            System.out.println("Error: opcion no valida, intentelo de nuevo.");
-                                return;
-                        }
-                    
-                        /*
-                        * Utilizamos la librería ChronoUnit para optimizar el plazo que dure la reserva
-                        * es decir, el número de moches que dure la reserva para calcular el precio, entre
-                        * su fecha de inicio y fecha de fin del plazo de la reserva 
-                        */
-                        long noches = ChronoUnit.DAYS.between(
-                        Reserva.getcheck_in().toLocalDate(),
-                        Reserva.getcheck_out().toLocalDate());
-                        
-                        // Calculamos el precio total de la habitación por el número de noches hospedadas
-                        double totalPrecio = noches * precioPorNoche;
-
-                        // Imprimimos los resultados con la información de la habitación con su precio estándar
-                        // y su precio total por noches.
-                        System.out.println(" |--RESUMEN DE LA RESERVA: --| ");
-                        System.out.println("Tipo de reserva: " + tipoHabitacion);
-                        System.out.println("Noches de la reserva " + noches);
-                        System.out.println("Precio de reserva/noche: " + precioPorNoche + "€");
-                        System.out.println("Subtotal: " + totalPrecio + "€");
-                        System.out.println(" |--------------------------|");
-
-                    } else {
-                        // Devuelve false si la reserva no existe o no se ha registrado en el sistema 
-                        System.out.println("ERROR: la reserva no existe o no se ha registrado correctamente.");
+                //Muestro la reserva que indica el cliente
+                for(reservas reserva:listaReservas){
+                    //Filtro que la reserva pertenezca al usuario seleccionado
+                    if(reserva.getId()==reservaID){
+                        //Muestro el precio de la reserva
+                        System.out.println("El precio de la reserva indicada es: "+reserva.getprecio());
                     }
-                    return;
                 }
 
             } else {
@@ -672,8 +609,7 @@ public class Gestor_Hotel {
             // Devuelve false si el cliente no está registrado en el sistema o no existe
             System.out.println("ERROR: Lo sentimos, no hay registrado ningún cliente con ese nombre");
             return;
-        } 
-        teclado.close();
+        }
     }
 
     /*
@@ -728,6 +664,23 @@ public class Gestor_Hotel {
             default:
                 System.out.println("No seleccionó una opción válida");
                 break;
+        }
+    }
+
+    /*
+    Resultado: Este método te muestra la información de las reservas de un cliente, evitando su precio
+     */
+    public void buscarReservasActivasClienteParaCalcularPrecio(clientes cliente){
+        //Recorro el listado de reservas que existen
+        for(reservas reserva:listaReservas){
+            //Compruebo que la reserva tiene el mismo cliente que el cliente introducido
+            if(reserva.getcliente()==cliente){
+                //Doy la información sobre dicha reserva
+                System.out.println("-------------------------------------------");
+                System.out.println("La reserva de "+cliente.getNombre()+" tiene el id "+reserva.getId()+",");
+                System.out.println("se reserva la habitación "+reserva.gethabitacion().getNumeroHabitacion()+" desde "+reserva.getcheck_in()+" hasta "+reserva.getcheck_out()+".");
+                System.out.println("-------------------------------------------");
+            }
         }
     }
 
