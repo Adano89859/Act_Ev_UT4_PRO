@@ -327,8 +327,9 @@ public class Gestor_Hotel {
      * Resultado: El cliente seleccionado eliminara la reserva registrada mediante su Id (codigo de reserva)
      */
     public void cancelarReservaPorCliente() throws ClienteNoEncontradoException {
-
+        //Inicializo 2 teclados, porque me está dando errores
         Scanner teclado = new Scanner(System.in);
+        Scanner teclado2 = new Scanner(System.in);
         try {
             
         // Pedimos por teclado el nombre del cliente que desea eiminar la reserva
@@ -344,18 +345,18 @@ public class Gestor_Hotel {
          * Evaluamos la acción según la desición del cliente (si/no)
          */
         if (clienteSeleccionado != null) {
-            System.out.println("El cliente "+ clienteSeleccionado + "ha sido seleccionado.");
+            System.out.println("El cliente "+ clienteSeleccionado.getNombre() + "ha sido seleccionado.");
 
             //Le mostramos a este usuario las reservas que posee, para que pueda elegir
             buscarReservasActivasCliente(clienteSeleccionado);
 
             //Pedimos por teclado que introduzca el código de su reserva
-            System.out.println("Introduzca el código de su reserva ");
+            System.out.println("Introduzca el id de su reserva a cancelar ");
             int idReserva = teclado.nextInt();
 
             //Preguntamos si quiere confirmar que quiere cancelar la reserva
-            System.out.println("El " + clienteSeleccionado +": ¿Desea cancelar la reseva (s/n)?");
-            String option = teclado.nextLine();
+            System.out.println("¿Desea cancelar la reseva (s/n)?");
+            String option = teclado2.nextLine();
 
             // Acciones si la desición del cliente es (s) "si"
             if (option.equals("s")) {
@@ -392,9 +393,13 @@ public class Gestor_Hotel {
 
 
                 }
-            } else {
+            } else if (option.equals("n")) {
                 // Acciones si la desición del cliente es (n) "no"
                 System.out.println("Cancelando operación...");
+                return;
+            }else{
+                //Informo si introdujo una opción no válida
+                System.out.println("Opción no válida: Cancelando operación...");
                 return;
             }
 
