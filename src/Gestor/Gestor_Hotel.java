@@ -90,77 +90,80 @@ public class Gestor_Hotel {
 
         //Compruebo que existe el usuario
         if(verificadorClienteExiste(persona)){
-            //Ahora que sé que el usuario existe, le digo las habitaciones que están disponibles
-            mostrarHabitacionesDisponibles();
+            //Añado la restricción de que el cliente solo puede tener tres reservas
+            if(verificadorClienteTieneMenosDe3Reservas(persona)){
+                //Ahora que sé que el usuario existe, le digo las habitaciones que están disponibles
+                mostrarHabitacionesDisponibles();
 
-            //Le pido al usuario la habitación que quiere
-            System.out.println("Introduce el número de la habitación que deseas reservar:");
-            int habitacionReservar = teclado.nextInt();
+                //Le pido al usuario la habitación que quiere
+                System.out.println("Introduce el número de la habitación que deseas reservar:");
+                int habitacionReservar = teclado.nextInt();
 
-            //Verifico que la habitación seleccionada existe
-            if(verificadorHabitaciónExiste(habitacionReservar)){
-                //Compruebo que la habitación seleccionada está disponible
-                if(verificadorHabitaciónDisponible(habitacionReservar)){
-                    //Le pregunto al usuario cuándo quiere iniciar su reserva
-                    System.out.println("Introduce dentro de cuántos días quieres iniciar el check-in (Máximo en 90):");
-                    int fechaCheckInEnInt = teclado.nextInt();
+                //Verifico que la habitación seleccionada existe
+                if(verificadorHabitaciónExiste(habitacionReservar)){
+                    //Compruebo que la habitación seleccionada está disponible
+                    if(verificadorHabitaciónDisponible(habitacionReservar)){
+                        //Le pregunto al usuario cuándo quiere iniciar su reserva
+                        System.out.println("Introduce dentro de cuántos días quieres iniciar el check-in (Máximo en 90):");
+                        int fechaCheckInEnInt = teclado.nextInt();
 
-                    //Compruebo que la fecha de check in está en un rango válido
-                    if(fechaCheckInEnInt<1){
-                        System.out.println("ERROR: La fecha de check-in debe ser en al menos 1 día");
-                    }else{
-                        //Compruebo que no se excede del rango permitido
-                        if(fechaCheckInEnInt>90){
-                            System.out.println("ERROR: La fecha de check-in no debe superar el plazo de 90 días");
+                        //Compruebo que la fecha de check in está en un rango válido
+                        if(fechaCheckInEnInt<1){
+                            System.out.println("ERROR: La fecha de check-in debe ser en al menos 1 día");
                         }else{
-                            //Ahora que las comprobaciones se han realizado correctamente, podemos seguir trabajando
-                            //Saco la fecha actual
-                            LocalDateTime fechaActual = LocalDateTime.now();
-                            //Sumo la fecha actual a dentro de cuanto será el check-in
-                            LocalDateTime fechaCheckIn = fechaActual.plusDays(fechaCheckInEnInt);
-
-                            //Pregunto cuántas noches será la reserva
-                            System.out.println("¿Cuántas noches desea hospedarse?");
-                            int fechaCheckOutEnInt = teclado.nextInt();
-
-                            //Compruebo que la cantidad de noches no sea negativa
-                            if(fechaCheckOutEnInt<1){
-                                System.out.println("ERROR: No puede reservar menos de 1 noche");
+                            //Compruebo que no se excede del rango permitido
+                            if(fechaCheckInEnInt>90){
+                                System.out.println("ERROR: La fecha de check-in no debe superar el plazo de 90 días");
                             }else{
-                                //Creo la fecha de check-out
-                                LocalDateTime fechaCheckOut = fechaCheckIn.plusDays(fechaCheckOutEnInt);
+                                //Ahora que las comprobaciones se han realizado correctamente, podemos seguir trabajando
+                                //Saco la fecha actual
+                                LocalDateTime fechaActual = LocalDateTime.now();
+                                //Sumo la fecha actual a dentro de cuanto será el check-in
+                                LocalDateTime fechaCheckIn = fechaActual.plusDays(fechaCheckInEnInt);
 
-                                //Obtengo el precio total que tendrá la reserva en base a las noches y la habitación
-                                habitaciones habitacionConcreta = obtenerHabitacionConcreta(habitacionReservar);
-                                double precioNoches = (habitacionConcreta.getprecio_noche()*fechaCheckOutEnInt);
+                                //Pregunto cuántas noches será la reserva
+                                System.out.println("¿Cuántas noches desea hospedarse?");
+                                int fechaCheckOutEnInt = teclado.nextInt();
 
-                                //Para obtenter el id de la reserva, extraigo cual debería ser ahora su posición en el array
-                                int id = listaReservas.size();
+                                //Compruebo que la cantidad de noches no sea negativa
+                                if(fechaCheckOutEnInt<1){
+                                    System.out.println("ERROR: No puede reservar menos de 1 noche");
+                                }else{
+                                    //Creo la fecha de check-out
+                                    LocalDateTime fechaCheckOut = fechaCheckIn.plusDays(fechaCheckOutEnInt);
 
-                                //Cambio el estado de la habitación a reservado
-                                cambiarEstadoHabitaciónAReservado(habitacionReservar);
+                                    //Obtengo el precio total que tendrá la reserva en base a las noches y la habitación
+                                    habitaciones habitacionConcreta = obtenerHabitacionConcreta(habitacionReservar);
+                                    double precioNoches = (habitacionConcreta.getprecio_noche()*fechaCheckOutEnInt);
 
-                                //Introduzco esta reserva como un elemento del historial del Cliente
-                                String historial_estaReserva_usuario = "El id de esta reserva es "+String.valueOf(id)+", la habitación reservada es "+habitacionConcreta.getNumeroHabitacion()+", con la fecha de check-in "+fechaCheckIn+" y la fecha check-out" +fechaCheckOut+ ",a un precio total de "+precioNoches+" euros.";
-                                introducirHistorialCliente(persona,historial_estaReserva_usuario);
+                                    //Para obtenter el id de la reserva, extraigo cual debería ser ahora su posición en el array
+                                    int id = listaReservas.size();
 
-                                //Meto la reserva en el listado de reservas y la creo
-                                listaReservas.add(new reservas(id,obtenerHabitacionConcreta(habitacionReservar),obtenerClienteConcreto(persona), fechaCheckIn,fechaCheckOut,precioNoches));
+                                    //Cambio el estado de la habitación a reservado
+                                    cambiarEstadoHabitaciónAReservado(habitacionReservar);
+
+                                    //Introduzco esta reserva como un elemento del historial del Cliente
+                                    String historial_estaReserva_usuario = "El id de esta reserva es "+String.valueOf(id)+", la habitación reservada es "+habitacionConcreta.getNumeroHabitacion()+", con la fecha de check-in "+fechaCheckIn+" y la fecha check-out" +fechaCheckOut+ ",a un precio total de "+precioNoches+" euros.";
+                                    introducirHistorialCliente(persona,historial_estaReserva_usuario);
+
+                                    //Meto la reserva en el listado de reservas y la creo
+                                    listaReservas.add(new reservas(id,obtenerHabitacionConcreta(habitacionReservar),obtenerClienteConcreto(persona), fechaCheckIn,fechaCheckOut,precioNoches));
+                                }
                             }
                         }
+                    }else{
+                        System.out.println("ERROR: La habitación que seleccionó no está disponible");
                     }
                 }else{
-                    System.out.println("ERROR: La habitación que seleccionó no está disponible");
+                    System.out.println("ERROR: La habitación que seleccionó no existe");
                 }
             }else{
-                System.out.println("ERROR: La habitación que seleccionó no existe");
+                System.out.println("ERROR: El usuario ya excedió el límite de reservas, 3.");
             }
         }else{
             System.out.println("ERROR: La persona que seleccionó no existe");
         }
-
         teclado.close();
-
     }
 
     /*
@@ -490,6 +493,30 @@ public class Gestor_Hotel {
         //Muestro el historial del cliente
         System.out.println("El historial de "+cliente.getNombre()+" es:");
         System.out.println(cliente.getHistorial());
+    }
+
+    /*
+    @param pide el nombre del cliente
+    @return Devuelve true si el cliente tiene menos de 3 reservas, devuelve false si el cliente tiene 3 o más reservas
+    Resultado: Este método comprueba que el cliente tenga menos de tres reservas , o en su defecto, tenga tres o más
+     */
+    public boolean verificadorClienteTieneMenosDe3Reservas(String cliente){
+        //Creo una variable que va a contar la cantidad de reservas que tiene el cliente
+        int cantidadReservasTieneCliente=0;
+        //Recorro el array de reservas
+        for(reservas reserva:listaReservas){
+            //Filtro que la reserva pertenezca al usuario seleccionado
+            if(reserva.getcliente().getNombre().equals(cliente)){
+                //Si la reserva est´ña a nombre del cliente, añado 1 a las reservas que son del cliente
+                cantidadReservasTieneCliente++;
+            }
+        }
+        //Si el cliente tiene 3 reservas o más, devuelvo false
+        if(cantidadReservasTieneCliente>=3){
+            return false;
+        }
+        //Si el cliente tiene menos de 3 reservas, devuelvo true
+        return true;
     }
 
 }
