@@ -144,7 +144,7 @@ public class Main {
         //Introducimos en él los ejemplos de clientes que usaremos
         listaClientes[0] = new clientes(1,"ClienteEjemplo");
         listaClientes[1] = new clientes(2,"Kevin");
-        listaClientes[2] = new clientes(3,"Adán");
+        listaClientes[2] = new clientes(3,"Adan");
         listaClientes[3] = new clientes(4,"Josue");
         listaClientes[4] = new clientes(5,"Mer");
         //Devolvemos el array creado
