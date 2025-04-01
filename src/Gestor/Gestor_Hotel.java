@@ -85,6 +85,8 @@ public class Gestor_Hotel {
         //Creo un scanner para leer la información que introduce el usuario
         Scanner teclado = new Scanner(System.in);
 
+        try {
+        
         //Recojo el supuesto usuario que va a realizar la reserva
         System.out.println("Decidió crear una reserva ¿Quién es el interesado en hacer la reserva?");
         String persona = teclado.nextLine();
@@ -163,6 +165,9 @@ public class Gestor_Hotel {
             }
         }else{
             System.out.println("ERROR: La persona que seleccionó no existe");
+        }
+        } catch (ReservaNoDisponibleException e) {
+            System.out.println(e.getMessage());
         }
         teclado.close();
     }
@@ -339,9 +344,11 @@ public class Gestor_Hotel {
      * @return Objeto Cliente, Objeto Reserva (Eliminar)
      * Resultado: El cliente seleccionado eliminara la reserva registrada mediante su Id (codigo de reserva)
      */
-    public void cancelarReservaPorCliente() {
+    public void cancelarReservaPorCliente() throws ClienteNoEncontradoException {
 
         Scanner teclado = new Scanner(System.in);
+        try {
+            
         // Pedimos por teclado el nombre del cliente que desea eiminar la reserva
         System.out.println("Seleccione el cliente que quiere cancelar la reserva: ");
         String nombreCliente = teclado.nextLine();
@@ -410,9 +417,14 @@ public class Gestor_Hotel {
             }
 
         } else {
+            
             System.out.println("Lo sentimos, no se ha encontrado un cliente con ese nombre");
-            return;
         }
+
+        } catch (ClienteNoEncontradoException e) {
+            System.out.println(e.getMessage());
+        } 
+
         teclado.close();
     }
 

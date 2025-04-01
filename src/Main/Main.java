@@ -6,6 +6,7 @@ import Modelos.clientes;
 import Modelos.habitaciones;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import Modelos.reservas;
@@ -30,7 +31,7 @@ public class Main {
         Scanner teclado = new Scanner(System.in);
         
         //Inicializamos las variables del main
-        int eleccion;
+        int eleccion = 0;
         
         //Cargamos la vista
         MainVista mainVista = new MainVista();
@@ -40,49 +41,54 @@ public class Main {
 
         do{
 
-            //Creamos un menú de las opciones que se pueden elegir
-            mainVista.mostrarMenuReserva();
+            try {
 
-            //Leemos la opción elegida por el usuario
-            eleccion = teclado.nextInt();
+                //Creamos un menú de las opciones que se pueden elegir
+                mainVista.mostrarMenuReserva();
 
-            //A partir de la opción elegida por el usuario, llamamos al método indicado
-            switch (eleccion) {
-                case 1:
-                    gestorHotel.crearReserva();
-                    break;
-                    case 2:
-                    gestorHotel.cancelarReservaPorCliente();
-                    
-                    break;
-                    case 3:
-                    gestorHotel.buscarHabitaciones();
-                    
-                    break;
-                    case 4:
-                        //Metodo para ver todas las reservas activas
-                        gestorHotel.buscarReservasActivas();
-                    break;
-                    case 5:
-                        // Traemos del gestor el resumen de las habitaciones
-                        gestorHotel.resumenHabitaciones();
-                    break;
-                    case 6:
-                        // Traemos del gestor el resumen de los clientes
-                        gestorHotel.resumenCliente();
-                    break;
-                    case 7:
-                        // Treaemos del gestor el método para calcular el precio de renta por noches
-                        gestorHotel.calcularPrecioHabitacion();
-                    break;
-                    case 8:
-                        // Traemos de la vista el texto de despedida
-                        mainVista.mostrarDespedida();
-                    break;
-                default:
-                    // Traemos de la vista el texto de opción inválida
-                    mainVista.mostrarOpcionInvalida();
-                    throw new AssertionError();
+                //Leemos la opción elegida por el usuario
+                eleccion = teclado.nextInt();
+
+                //A partir de la opción elegida por el usuario, llamamos al método indicado
+                switch (eleccion) {
+                    case 1:
+                        gestorHotel.crearReserva();
+                        break;
+                        case 2:
+                        gestorHotel.cancelarReservaPorCliente();
+                        
+                        break;
+                        case 3:
+                        gestorHotel.buscarHabitaciones();
+                        
+                        break;
+                        case 4:
+                            //Metodo para ver todas las reservas activas
+                            gestorHotel.buscarReservasActivas();
+                        break;
+                        case 5:
+                            // Traemos del gestor el resumen de las habitaciones
+                            gestorHotel.resumenHabitaciones();
+                        break;
+                        case 6:
+                            // Traemos del gestor el resumen de los clientes
+                            gestorHotel.resumenCliente();
+                        break;
+                        case 7:
+                            // Treaemos del gestor el método para calcular el precio de renta por noches
+                            gestorHotel.calcularPrecioHabitacion();
+                        break;
+                        case 8:
+                            // Traemos de la vista el texto de despedida
+                            mainVista.mostrarDespedida();
+                        break;
+                    default:
+                        // Traemos de la vista el texto de opción inválida
+                        mainVista.mostrarOpcionInvalida();
+                        throw new AssertionError();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("ERROR: debe ingresar un número entero ej: 1,2,3..." + e.getMessage());
             }
         }while(eleccion !=8);
 
