@@ -576,8 +576,8 @@ public class Gestor_Hotel {
          */
 
         if (clienteSeleccionado != null) {
-            System.out.println("El cliente "+ clienteSeleccionado + "ha sido seleccionado.");
-            System.out.println("El " + clienteSeleccionado +": ¿Desea calcular la reseva e imprimir ticket (s/n)?");
+            System.out.println("El cliente "+ clienteSeleccionado.getNombre() + "ha sido seleccionado.");
+            System.out.println("El " + clienteSeleccionado.getNombre() +": ¿Desea calcular la reseva e imprimir ticket (s/n)?");
             String option = teclado.nextLine();
 
             // Acciones si la desición del cliente es (s) "si"
