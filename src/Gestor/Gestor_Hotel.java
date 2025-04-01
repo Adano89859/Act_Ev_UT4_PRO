@@ -355,35 +355,52 @@ public class Gestor_Hotel {
          */
         if (clienteSeleccionado != null) {
             System.out.println("El cliente "+ clienteSeleccionado + "ha sido seleccionado.");
+
+            //Le mostramos a este usuario las reservas que posee, para que pueda elegir
+            buscarReservasActivasCliente(clienteSeleccionado);
+
+            //Pedimos por teclado que introduzca el código de su reserva
+            System.out.println("Introduzca el código de su reserva ");
+            int idReserva = teclado.nextInt();
+
+            //Preguntamos si quiere confirmar que quiere cancelar la reserva
             System.out.println("El " + clienteSeleccionado +": ¿Desea cancelar la reseva (s/n)?");
             String option = teclado.nextLine();
 
             // Acciones si la desición del cliente es (s) "si"
             if (option.equals("s")) {
-                //Pedimos por teclado que introduzca el código de su reserva 
-                System.out.println("Introduzca el código de su reserva ");
-                int idReserva = teclado.nextInt();
+
                 
                 //Recorro el listado de reservas exitente
                 for (reservas Reserva : listaReservas) {
-                    // Filtramos la fecha de la reserva
-                    LocalDateTime fechaReserva = LocalDateTime.now();
-                    // Comprobamos si la reserva aún no ha comenzado
-                    // Devuelve false si no existe o si ya ha comenzado la reserva
-                    if (Reserva.getId() == idReserva) {
-                        if (Reserva.getcheck_in().isBefore(fechaReserva)) {
-                            System.out.println("Error: la reserva ya ha comenzado " + Reserva.getcheck_in());
-                        } else {
-                            // Devuelve true si se cumple la condición elimina la reserva
-                            listaReservas.remove(Reserva);
-                            System.out.println("Reserva eliminada correctamente ");
-                            return;
-                            
+                    //Comprobamos que la reserva pertenece al cliente
+                    if(Reserva.getcliente().getNombre().equals(nombreCliente)){
+
+                        // Filtramos la fecha de la reserva
+                        LocalDateTime fechaReserva = LocalDateTime.now();
+                        // Comprobamos si la reserva aún no ha comenzado
+                        // Devuelve false si no existe o si ya ha comenzado la reserva
+                        if (Reserva.getId() == idReserva) {
+                            if (Reserva.getcheck_in().isBefore(fechaReserva)) {
+                                System.out.println("Error: la reserva ya ha comenzado " + Reserva.getcheck_in());
+                            } else {
+                                //Cambio el estado de la habitación original a DISPONIBLE
+                                cambiarEstadoHabitaciónADisponible(Reserva.gethabitacion().getNumeroHabitacion());
+
+                                // Elimina la reserva
+                                listaReservas.remove(Reserva);
+                                System.out.println("Reserva eliminada correctamente ");
+                                return;
+
+                            }
                         }
+
+                        System.out.println("Error: no se ha encontrado una reserva con el id: " + idReserva);
+                        return;
+
                     }
 
-                    System.out.println("Error: no se ha encontrado una reserva con el id: " + idReserva);
-                    return;
+
                 }
             } else {
                 // Acciones si la desición del cliente es (n) "no"
@@ -415,7 +432,6 @@ public class Gestor_Hotel {
                 System.out.println("-------------------------------------------");
             }
         }
-
     }
 
     /*
@@ -466,6 +482,23 @@ public class Gestor_Hotel {
                 if(habitacionConcreta == habitacion.getNumeroHabitacion()){
                     //Cambio el estado de la habitación a Reservado
                     habitacion.setestado(Estado.RESERVADA);
+                }
+            }
+        }
+    }
+
+    /*
+    @param Trae el número de la habitación de la habitación concreta que va a ser alterada
+    Resultado: Cambia el estado de la habitación seleccionada a "DISPONIBLE"
+     */
+    public void cambiarEstadoHabitaciónADisponible(int habitacionConcreta){
+        for(habitaciones[] planta:Hotel){
+            //Del desglosado previo, voy sacando el número de cada habitación
+            for(habitaciones habitacion:planta){
+                //Filtro que sea la habitación de la que estamos tratando
+                if(habitacionConcreta == habitacion.getNumeroHabitacion()){
+                    //Cambio el estado de la habitación a Reservado
+                    habitacion.setestado(Estado.DISPONIBLE);
                 }
             }
         }
