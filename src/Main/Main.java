@@ -72,7 +72,8 @@ public class Main {
                         gestorHotel.resumenCliente();
                     break;
                     case 7:
-                    
+                        // Treaemos del gestor el método para calcular el precio de renta por noches
+                        gestorHotel.calcularPrecioHabitacion();
                     break;
                     case 8:
                         // Traemos de la vista el texto de despedida
