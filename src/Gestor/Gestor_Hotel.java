@@ -169,7 +169,6 @@ public class Gestor_Hotel {
         } catch (ReservaNoDisponibleException e) {
             System.out.println(e.getMessage());
         }
-        teclado.close();
     }
 
     /*
